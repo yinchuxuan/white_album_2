@@ -1,0 +1,9 @@
+.DS_Store
+.env
+*.log
+node_modules/
+coverage/
+test-results/
+dist/
+sessions/
+.wcs-init.lock
