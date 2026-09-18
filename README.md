@@ -15,10 +15,10 @@
 ## 开始游玩
 
 1. 安装[世界站客户端](https://github.com/yinchuxuan/WorldCardStation/releases/latest)，配置自己的模型服务地址、API Key 和模型名称。本卡已使用世界站 1.0.0 做过静态检查。
-2. 在[游戏卡发布页](https://github.com/yinchuxuan/white_album_2/releases/latest)的 Assets 中下载 `white-album-2-1.0.png`。
+2. 在[游戏卡发布页](https://github.com/yinchuxuan/white_album_2/releases/latest)的 Assets 中下载 `white-album-2-1.0.1.png`。
 3. 在世界站点击“导入卡片”，选择下载的原始 PNG，阅读开场后开始行动。
 
-PNG 内含完整游戏资源，约 252 MiB，无需解压或 `git clone`。请勿将截图、压缩或重编码后的图片用于导入；GitHub 自动提供的 Source code 是开发源码，不是 PNG 卡包。
+PNG 内含完整游戏资源，约 108 MiB，无需解压或 `git clone`。请勿将截图、压缩或重编码后的图片用于导入；GitHub 自动提供的 Source code 是开发源码，不是 PNG 卡包。
 
 ## 怎么玩？
 
