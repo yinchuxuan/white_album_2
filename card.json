@@ -1,5 +1,5 @@
 {
-  "version": "1.0.1",
+  "version": "1.0.2",
   "id": "white-album-2",
   "name": "白色相簿2",
   "stateSchema": "state/schema.json",
