@@ -1,0 +1,16 @@
+{
+  "model": "default",
+  "responseValidation": { "$import": "response-validation.json" },
+  "rules": [
+    { "$import": "rules/system-prompt.json" },
+    {
+      "id": "wa2-player-input",
+      "when": { "phase": "pre_send" },
+      "then": [{ "type": "insert", "role": "user", "content": "{{state:turn.input}}" }]
+    },
+    { "$import": "rules/compress-assistant-history.json" },
+    { "$import": "rules/resolve-timeline.json" },
+    { "$import": "rules/insert-turn-context.json" },
+    { "$import": "rules/tail-timeline-guide.json" }
+  ]
+}

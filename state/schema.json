@@ -1,5 +1,6 @@
 {
   "schema": {
+    "turn.input": { "type": "string", "default": "", "llmWrite": false, "uiVisible": false },
     "touma.affection": {
       "type": "number",
       "default": 18,

@@ -1,21 +1,21 @@
 State更新与演出规则：
 
-1. 每次回复都必须以前导<state_patch>开始，在它之前不得输出任何文字。前导patch只设置首个镜头中需要改变的画面、立绘或音乐；未写字段继承上一轮状态，不要求同时设置visual.scene、visual.portraits和audio.bgm：
+1. 每次回复都必须以前导<state_patch_stream>开始，在它之前不得输出任何文字。前导patch只设置首个镜头中需要改变的画面、立绘或音乐；未写字段继承上一轮状态，不要求同时设置visual.scene、visual.portraits和audio.bgm：
 
-<state_patch>
+<state_patch_stream>
 {"audio.bgm":"steady"}
-</state_patch>
+</state_patch_stream>
 
-2. 自由剧情只能使用State写入契约中的通用资源。固定剧情可以额外使用剧情引导中“本节点特殊演出资源”指定的场景画面和音乐，特殊演出资源按指定的位置插入剧情。WA2卡不会替模型设置任何画面、立绘或音乐，所有演出资源都必须由模型通过state_patch编排。
+2. 自由剧情只能使用State写入契约中的通用资源。固定剧情可以额外使用剧情引导中“本节点特殊演出资源”指定的场景画面和音乐，特殊演出资源按指定的位置插入剧情。WA2卡不会替模型设置任何画面、立绘或音乐，所有演出资源都必须由模型通过state_patch_stream编排。
 
-3. state_patch是演出时间线中的状态检查点。正文中确实发生地点、视觉中心、表情或音乐变化时，在目标自然段之前插入新的state_patch。只写发生变化的字段，未写字段自动继承：
+3. state_patch_stream是演出时间线中的状态检查点。正文中确实发生地点、视觉中心、表情或音乐变化时，在目标自然段之前插入新的state_patch_stream。只写发生变化的字段，未写字段自动继承：
 
-<state_patch>
+<state_patch_stream>
 {"visual.portraits":{"touma":"sad","setsuna":"normal"},
  "audio.bgm":"sad"}
-</state_patch>
+</state_patch_stream>
 
-4. 每次使用state_patch设置演出状态时请检查演出设置内容是否错误地匹配成了state_patch之前的剧情内容，如果是的话请修正；state_patch设置的演出状态一定要和*后续生成的剧情内容*匹配！！！
+4. 每次使用state_patch_stream设置演出状态时请检查演出设置内容是否错误地匹配成了state_patch_stream之前的剧情内容，如果是的话请修正；state_patch_stream设置的演出状态一定要和*后续生成的剧情内容*匹配！！！
 
 5. visual.scene只能使用State写入契约中的通用 background，或者当前固定剧情节点中的特殊演出资源中的场景资源，不得选择其他固定剧情专用 CG 或编造资源名。选择通用 background 时，先匹配后续正文实际发生的地点，再按该场景的当前局部时间选择 morning、afternoon 或 night 版本；地点不变但时间跨入另一时段时也要切换。选择当前节点专用 CG 时直接使用剧情引导给出的资源名，不要添加时段后缀。只有场景或时段变化时才需要设置visual.scene，在表达极特殊的心理活动时可以设置none。
 
@@ -23,7 +23,7 @@ State更新与演出规则：
 
 7. audio.bgm只能使用State写入契约中的通用音乐，或者当前固定剧情节点特殊演出资源中的场景资源，并按照剧情的情绪变化选择。不要频繁地切换bgm，也不要总是使用steady的bgm，一般不设置为none。
 
-8. 每次回复必须包含用于更新本轮结束状态的结算<state_patch>，它与summary和choices的相对顺序不作要求，例如：
+8. 每次回复必须包含用于更新本轮结束状态的结算<state_patch>，它必须位于最终的单行choices之前，例如：
 
 <state_patch>
 [{"type":"state.inc","path":"touma.affection","value":2},
@@ -32,10 +32,10 @@ State更新与演出规则：
  {"type":"state.set","path":"timeline.currentTime","value":"2007.10.20: 15:00 星期六"}]
 </state_patch>
 
-在这个state_patch中不需要设置visual.scene, visual.portraits和audio.bgm
+普通 state_patch 在模型完整响应结束、通过校验后提交一次，不等待阅读。它只写剧情结算，不得设置 visual.scene、visual.portraits 或 audio.bgm；演出字段只写入 state_patch_stream。
 
 9. timeline.currentTime必须更新，只能设置为当前时间段内的时间，不得超过timeline.currentSlotEnd。timeline.currentSlot和timeline.currentSlotEnd由系统维护，不能写入。
 
 10. touma.affection、setsuna.affection和performance.proficiency只能用state.inc写入本轮增量，value为-5～5，禁止用state.set回写最终值。没有变化的字段直接省略，不写value为0的state.inc。affection只在较为特殊的互动后变化，一般人物互动不改变；performance.proficiency只有实际发生足以影响演出状态的练习、磨合、失误或状态波动时才变化。
 
-11. 所有state_patch只能使用State写入契约中的路径，以及通用值或当前固定节点临时开放的值，并且必须是合法JSON对象或action数组。
+11. 两种 patch只能使用State写入契约中的路径，以及通用值或当前固定节点临时开放的值，并且必须是合法JSON对象或action数组。

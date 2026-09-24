@@ -13,7 +13,7 @@ function isReadingControlTarget(target) {
 }
 
 // eslint-disable-next-line no-unused-vars
-function Root({ React, messages = [], emit, ui = {} }) {
+function Root({ React, emit, ui = {} }) {
   const C = React.createElement;
   const retryPanelRef = React.useRef(null);
   const rootRef = React.useRef(null);
@@ -144,23 +144,16 @@ function Root({ React, messages = [], emit, ui = {} }) {
       }, '重新生成'))));
   }
 
-  function renderThinkingIndicator() {
-    if (!ui.isLoading || paused) return null;
-    const lastUserMessage = [...messages].reverse().find(message => message?.role === 'user');
-    const userInput = String(lastUserMessage?.content || '')
-      .replace(/\n*---\s*\n\s*<wa2_turn_context>[\s\S]*?<\/wa2_turn_context>\s*$/g, '')
-      .replace(/<wa2_turn_context>[\s\S]*?<\/wa2_turn_context>/g, '')
-      .trim();
-    const label = userInput || '思考中';
+  function renderWaitingInput() {
+    if (paused || !ui.pendingInput?.trim()) return null;
     return C('div', {
-      className: 'wa2-thinking-indicator', role: 'status', 'aria-label': `${label}，等待回复`
-    },
-    C('span', { className: 'wa2-thinking-label' }, label),
+      className: 'wa2-thinking-indicator', role: 'status', 'aria-label': `${ui.pendingInput}，等待回复`
+    }, C('span', { className: 'wa2-thinking-label' }, ui.pendingInput),
     C('span', { className: 'wa2-thinking-dots', 'aria-hidden': 'true' },
       C('span', null, '…'), C('span', null, '…')));
   }
 
   return C('div', {
     className: 'wa2-ui-root', ref: rootRef, 'data-paused': paused ? 'true' : 'false'
-  }, renderThinkingIndicator(), renderRetryPanel());
+  }, renderWaitingInput(), renderRetryPanel());
 }

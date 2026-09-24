@@ -1,5 +1,8 @@
 {
-  "version": "1.0.2",
+  "formatVersion": "1",
+  "version": "1.1.0",
+  "main": "main.js",
+  "agents": { "narrator": "agents/narrator.json" },
   "id": "white-album-2",
   "name": "白色相簿2",
   "stateSchema": "state/schema.json",
@@ -7,23 +10,5 @@
   "audio": { "$import": "audio.json" },
   "visual": { "$import": "visual.json" },
   "display": { "$import": "display.json" },
-  "ui": { "$import": "ui.json" },
-  "responseValidation": { "$import": "response-validation.json" },
-  "rules": [
-    {
-      "$import": "rules/system-prompt.json"
-    },
-    {
-      "$import": "rules/compress-assistant-history.json"
-    },
-    {
-      "$import": "rules/resolve-timeline.json"
-    },
-    {
-      "$import": "rules/insert-turn-context.json"
-    },
-    {
-      "$import": "rules/tail-timeline-guide.json"
-    }
-  ]
+  "ui": { "$import": "ui.json" }
 }

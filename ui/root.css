@@ -177,7 +177,6 @@
     animation: none;
   }
 }
-
 .game-card-theme-white-album-2 .wa2-thinking-indicator {
   position: fixed;
   top: var(--wa2-cinema-frame-bottom);
@@ -218,15 +217,6 @@
 
 .game-card-theme-white-album-2 .wa2-thinking-dots span + span {
   animation-delay: 300ms;
-}
-
-.app-container.game-card-theme-white-album-2:has(
-  [data-gc-part="message-list"]
-  > [data-gc-part="message-row"][data-role="assistant"]:last-child
-  .segmented-reading-page [data-gc-part="message-content"]:not(:empty)
-) .wa2-thinking-indicator {
-  opacity: 0;
-  visibility: hidden;
 }
 
 @keyframes wa2-thinking-dot {

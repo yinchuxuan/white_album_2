@@ -6,7 +6,7 @@
      ]
     },
     {"id":"wa2-apply-response-summary",
-     "when":{"phase":"after_stream","last":{"role":"assistant","content":{"regex":"<summary>[\\s\\S]*?</summary>"}}},
+     "when":{"phase":"post_response","last":{"role":"assistant","content":{"regex":"<summary>[\\s\\S]*?</summary>"}}},
      "then":[
         {"type":"exec","sourceFile":"scripts/summary-memory.js"}
      ]

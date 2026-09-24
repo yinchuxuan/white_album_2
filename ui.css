@@ -105,13 +105,16 @@
   --md-error-container: #FEF2F2;
   --md-success: #16A34A;
   --md-success-container: #F0FDF4;
+  --md-on-success: #FFFFFF;
+  --md-on-success-container: #14532D;
   --md-elevation-level-3: 0px 4px 8px 3px rgba(0, 0, 0, 0.15), 0px 1px 3px 0px rgba(0, 0, 0, 0.3);
   --gc-input-bg: rgba(250, 253, 255, 0.76);
   --wa2-frost-border: rgba(218, 234, 246, 0.62);
   z-index: 130;
 }
 
-.app-container.game-card-theme-white-album-2 [data-gc-part="chat-input"] {
+/* Keep the cinematic input transparent above the platform's dark/background presets. */
+:root .app-container.game-card-theme-white-album-2 .chat-input-area[data-gc-part="chat-input"] {
   left: clamp(160px, 15vw, 280px);
   right: clamp(160px, 15vw, 280px);
   bottom: 34px;
@@ -211,8 +214,11 @@
   background: transparent;
 }
 
-.app-container.game-card-theme-white-album-2:has(.segmented-reading-bubble):not(:has(.segmented-reading-bubble .wa2-choice)) [data-gc-part="chat-input"],
-.app-container.game-card-theme-white-album-2:has(.segmented-reading-bubble):not(:has(.segmented-reading-bubble .wa2-choice)) [data-gc-part="chat-input-trigger"] {
+.app-container.game-card-theme-white-album-2:has(.wa2-thinking-indicator) .wa2-choice-overlay,
+.app-container.game-card-theme-white-album-2:has(.wa2-thinking-indicator) [data-gc-part="chat-input"],
+.app-container.game-card-theme-white-album-2:has(.wa2-thinking-indicator) [data-gc-part="chat-input-trigger"],
+.app-container.game-card-theme-white-album-2:not(:has(.wa2-choice-overlay)) [data-gc-part="chat-input"],
+.app-container.game-card-theme-white-album-2:not(:has(.wa2-choice-overlay)) [data-gc-part="chat-input-trigger"] {
   display: none;
 }
 
@@ -529,6 +535,10 @@
 .app-container.game-card-theme-white-album-2 [data-gc-part="message-row"] {
   position: relative;
   z-index: 2;
+}
+
+.app-container.game-card-theme-white-album-2 .chat-message-row .retry-btn {
+  display: none !important;
 }
 
 .app-container.game-card-theme-white-album-2 [data-role="assistant"][data-gc-part="message-row"] {

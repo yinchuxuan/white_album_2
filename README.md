@@ -14,7 +14,14 @@
 
 ## 开始游玩
 
-1. 安装[世界站客户端](https://github.com/yinchuxuan/WorldCardStation/releases/latest)，配置自己的模型服务地址、API Key 和模型名称。本卡已使用世界站 1.0.0 做过静态检查。
+当前源码已迁移到世界站 formatVersion 1（main.js + Narrator Agent），需要支持该协议的客户端或 Web 播放器；
+旧版客户端和已发布的旧卡包不能与这份源码混用。旧存档不自动迁移。
+开发测试可直接导入本仓库的 card.json；新建 Session 时先执行 Agent 的 init，再由 onStart 分段展示开场，不请求模型。
+first_msg.md 由 init 写入 Narrator 的 Messages，onStart 直接读取这条消息；读档不会重复播放开场。
+
+以下是旧版已发布卡包的获取方式；新协议卡包需随兼容的平台版本重新发布：
+
+1. 安装[世界站客户端](https://github.com/yinchuxuan/WorldCardStation/releases/latest)，配置自己的模型服务地址、API Key 和模型名称，确认所下载卡包与平台协议匹配。
 2. 在[游戏卡发布页](https://github.com/yinchuxuan/white_album_2/releases/latest)的 Assets 中下载 `white-album-2-1.0.1.png`。
 3. 在世界站点击“导入卡片”，选择下载的原始 PNG，阅读开场后开始行动。
 
