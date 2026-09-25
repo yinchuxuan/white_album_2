@@ -10,7 +10,7 @@
 {
   "files": {
     "timeline": { "directory": "timeline", "include": ["config.json"] },
-    "plot": "plot/chapter-1.md"
+    "plot": "agents/narrator/plot/chapter-1.md"
   },
   "rules": [{
     "when": { "phase": "pre_send" },
@@ -108,9 +108,9 @@ async function run(ctx) {
 - `resolveTimeline(config, { currentTime, currentSlotEnd })`：组合约束和选择，返回 `{ currentTime, slot, diagnostics }`，不修改输入。
 - `loadTimelineConfig(ctx, args = ctx.args)`：只读取并解析授权 JSON；节点结构在选择时校验，JSON 内不展开平台的加载期 `$import`。
 
-WA2 的专属入口是 `scripts/plot.js`，章节逻辑位于 `scripts/chapters/`，通过 include 使用 `lib/timeline/core.js`，不调用库的默认 index.js 入口。先约束时间，再选择章节配置；保留原分支、结局和随机剧情代码，以及原有 state 字段。日后谈由卡片直接选择，不再匹配普通节点表。两章的原首节点回退显式配置为 fallback。
+WA2 的专属入口是 `agents/narrator/scripts/plot.js`，章节逻辑位于 `agents/narrator/scripts/chapters/`，通过 include 使用 `lib/timeline/core.js`，不调用库的默认 index.js 入口。先约束时间，再选择章节配置；保留原分支、结局和随机剧情代码，以及原有 state 字段。日后谈由卡片直接选择，不再匹配普通节点表。两章的原首节点回退显式配置为 fallback。
 
-配置目录不必命名为 timeline。WA2 将 `plot/chapter-1.json`、`plot/chapter-2.json` 与同章 Markdown 正文放在一起；`files.timeline` 的 directory 为 `plot`，include 仍仅授权两份 JSON。正文继续使用原有 `plot.chapter.*` 精确文件 ID，scope ID、脚本参数和存档字段不随物理目录变更。
+配置目录不必命名为 timeline。WA2 将 `agents/narrator/plot/chapter-1.json`、`agents/narrator/plot/chapter-2.json` 与同章 Markdown 正文放在一起；`files.timeline` 的 directory 为 `agents/narrator/plot`，include 仍仅授权两份 JSON。正文继续使用原有 `plot.chapter.*` 精确文件 ID，scope ID、脚本参数和存档字段不随物理目录变更。
 
 ## 诊断与验证
 

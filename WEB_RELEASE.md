@@ -8,7 +8,7 @@ Workflow 上传 `wcs-card-web.zip` 和 `wcs-card-web.zip.sha256`，完成后通�
 
 发布器固定为 Workflow 中的 40 位 commit SHA。平台/Schema 兼容性是精确匹配；升级时明确更新发布器，不使用浮动 master。CI 不会为了通过检查修改游戏卡内容。
 
-当前源码使用 formatVersion 1、main.js 与 agents/narrator.json，卡内容版本为 1.1.0。
+当前源码使用 formatVersion 1、main.js 与 narrator / settlement 双 Agent（agents/narrator/agent.json、agents/settlement/agent.json），卡内容版本为 1.2.0。
 发布前须将 Workflow 的发布器固定提交更新为已交付新协议的 WorldCardStation 提交，并同步主站播放器；
 当前固定的旧发布器不能作为新源码的发布基线。仅修改卡片源码不代表线上卡包已更新。
 

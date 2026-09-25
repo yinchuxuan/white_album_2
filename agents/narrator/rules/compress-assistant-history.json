@@ -1,0 +1,49 @@
+[
+  {
+    "id": "wa2-refresh-summary-memory",
+    "when": {
+      "phase": "pre_send"
+    },
+    "then": [
+      {
+        "type": "exec",
+        "sourceFile": "agents/shared/scripts/summary-memory.js",
+        "args": {
+          "apply": false
+        }
+      }
+    ]
+  },
+  {
+    "id": "wa2-compress-assistant-history",
+    "when": {
+      "phase": "pre_send"
+    },
+    "then": [
+      {
+        "type": "remove",
+        "predicate": {
+          "role": "assistant",
+          "occurrence": "not_last"
+        }
+      }
+    ]
+  },
+  {
+    "id": "wa2-keep-latest-user",
+    "when": {
+      "phase": "pre_send"
+    },
+    "then": [
+      {
+        "type": "remove",
+        "predicate": {
+          "role": "user",
+          "not": {
+            "index": "last"
+          }
+        }
+      }
+    ]
+  }
+]

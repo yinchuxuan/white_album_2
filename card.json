@@ -1,8 +1,8 @@
 {
   "formatVersion": "1",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "main": "main.js",
-  "agents": { "narrator": "agents/narrator.json" },
+  "agents": { "narrator": "agents/narrator/agent.json", "settlement": "agents/settlement/agent.json" },
   "id": "white-album-2",
   "name": "白色相簿2",
   "stateSchema": "state/schema.json",

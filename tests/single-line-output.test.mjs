@@ -5,8 +5,13 @@ import vm from 'node:vm';
 
 const read = file => readFileSync(new URL(`../${file}`, import.meta.url), 'utf8');
 const display = JSON.parse(read('display.json'));
-const validation = JSON.parse(read('response-validation.json'));
-const opening = read('first_msg.md');
+const validation = { rules: [...JSON.parse(read('agents/narrator/response-validation.json')).rules,
+  ...JSON.parse(read('agents/settlement/response-validation.json')).rules] };
+const opening = read('agents/narrator/prompts/first_msg.md');
+const initialMemory = JSON.parse(read('agents/settlement/initial-memory.json'));
+const summary = '<summary>' + [['anchor', 'anchor'], ['currentEvents', 'current_event'], ['recent', 'recent']]
+  .flatMap(([key, priority]) => initialMemory[key].map(item =>
+    `<item priority="${priority}" known_by="${item.knownBy.join(',')}">${item.text}</item>`)).join('') + '</summary>';
 const matches = (id, text) => {
   const rule = validation.rules.find(item => item.id === id);
   return [...text.matchAll(new RegExp(rule.pattern, `${rule.flags || ''}g`))].length;
@@ -15,7 +20,11 @@ const transform = text => display.assistant.reduce((value, rule) =>
   value.replace(new RegExp(rule.pattern, rule.flags), rule.replace), text);
 
 test('opening blocks stay on one line and display yields exactly four buttons, no summary', () => {
-  const summary = opening.match(/<summary>[\s\S]*?<\/summary>/)[0];
+  assert.ok(!opening.includes('<summary>'));
+  assert.ok(!opening.includes('<state_patch>'));
+  for (const [, raw] of opening.matchAll(/<state_patch_stream>([\s\S]*?)<\/state_patch_stream>/g)) {
+    assert.ok(Object.keys(JSON.parse(raw)).every(key => ['visual.scene', 'visual.portraits', 'audio.bgm'].includes(key)));
+  }
   const choices = opening.match(/<choices>[\s\S]*?<\/choices>/)[0];
   assert.ok(!summary.includes('\n'));
   assert.ok(!choices.includes('\n'));
@@ -49,17 +58,17 @@ test('choices use exactly four item bodies; labels are supplied by display, not 
 });
 
 test('single-line summary still updates structured memory and Agent summary message', () => {
-  const run = vm.runInNewContext(`${read('scripts/summary-memory.js')}; run;`);
+  const run = vm.runInNewContext(`${read('agents/shared/scripts/summary-memory.js')}; run;`);
   const result = run({ messages: [
     { role: 'system', content: '', _meta: { source: 'wa2_summary' } },
-    { role: 'assistant', content: opening }
+    { role: 'assistant', content: summary }
   ], state: {} });
   assert.equal(result.state.memory.summary.turn, 1);
   assert.equal(result.state.memory.summary.anchor.length, 1);
   assert.equal(result.state.memory.summary.currentEvents.length, 1);
   assert.equal(result.state.memory.summary.recent.length, 1);
   assert.match(result.messages[0].content, /主唱和键盘手/);
-  assert.equal(result.messages[1].content, opening);
+  assert.equal(result.messages[1].content, summary);
 });
 
 test('opening and generated choices finish reading without a choice-click acknowledgement', async () => {
@@ -70,7 +79,7 @@ test('opening and generated choices finish reading without a choice-click acknow
     state: { set: (key, value) => events.push([key, value]) },
     agents: {
       messages: () => [{ content: opening, _meta: { source: 'wa2_first_msg' } }],
-      call: () => ({ response: choices, done: async () => events.push('done') })
+      call: id => ({ response: choices, done: async () => events.push(`${id}:done`) })
     },
     createReader: options => options,
     present: async (reader, options) => {
@@ -84,5 +93,5 @@ test('opening and generated choices finish reading without a choice-click acknow
   assert.deepEqual(events, ['present']);
   events.length = 0;
   await entry.onInput(ctx, '选择 A');
-  assert.deepEqual(events, [['turn.input', '选择 A'], 'present', 'done']);
+  assert.deepEqual(events, [['turn.input', '选择 A'], 'present', 'narrator:done', 'settlement:done']);
 });

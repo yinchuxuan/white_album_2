@@ -1,0 +1,104 @@
+{
+  "model": "default",
+  "responseValidation": {
+    "$import": "agents/settlement/response-validation.json"
+  },
+  "rules": [
+    {
+      "id": "wa2-initial-memory",
+      "when": {
+        "phase": "init"
+      },
+      "then": [
+        {
+          "type": "state.set",
+          "path": "memory.summary",
+          "value": {
+            "$import": "agents/settlement/initial-memory.json"
+          }
+        }
+      ]
+    },
+    {
+      "id": "wa2-settlement-context",
+      "when": {
+        "phase": "pre_send"
+      },
+      "find": [
+        {
+          "name": "narrative",
+          "agentId": "narrator",
+          "from": {
+            "role": "assistant",
+            "index": "last"
+          }
+        }
+      ],
+      "then": [
+        {
+          "type": "remove",
+          "predicate": {
+            "content": {
+              "regex": "[\\s\\S]*"
+            }
+          }
+        },
+        {
+          "type": "insert",
+          "role": "system",
+          "content": "{{file:settlement_prompt}}\n\n{{file:state.settlement_schema}}"
+        },
+        {
+          "type": "insert",
+          "role": "system",
+          "content": "# 人物索引\n{{file:worldbook/entries/世界书索引.md}}.regex_extract{pattern:'人物:([\\s\\S]*?)地点:',group:1}",
+          "_meta": {
+            "source": "wa2_character_index",
+            "visibility": "llm_only"
+          }
+        },
+        {
+          "type": "insert",
+          "role": "system",
+          "content": "",
+          "_meta": {
+            "source": "wa2_summary",
+            "visibility": "llm_only"
+          }
+        },
+        {
+          "type": "exec",
+          "sourceFile": "agents/shared/scripts/summary-memory.js",
+          "args": {
+            "apply": false
+          }
+        },
+        {
+          "type": "insert",
+          "role": "system",
+          "content": "# 当前状态 \n- timeline.currentTime: {{state:timeline.currentTime}}\n- timeline.currentSlot: {{state:timeline.currentSlot}}\n- timeline.currentSlotEnd: {{state:timeline.currentSlotEnd}}\n- touma.affection: {{state:touma.affection}}\n- setsuna.affection: {{state:setsuna.affection}}\n- performance.proficiency: {{state:performance.proficiency}}"
+        },
+        {
+          "type": "insert",
+          "role": "user",
+          "content": "# 本轮完整剧情\n{{state:temp.find.narrative}}"
+        }
+      ]
+    },
+    {
+      "$import": "agents/settlement/rules/node-settlement.json"
+    },
+    {
+      "id": "wa2-settlement-memory",
+      "when": {
+        "phase": "post_response"
+      },
+      "then": [
+        {
+          "type": "exec",
+          "sourceFile": "agents/shared/scripts/summary-memory.js"
+        }
+      ]
+    }
+  ]
+}

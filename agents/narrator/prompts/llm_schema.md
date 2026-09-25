@@ -1,13 +1,4 @@
-# State 写入契约
-
-只能在两种 patch 中写入本契约列出的路径：`<state_patch_stream>` 只写画面、立绘和音乐，随阅读推进提交；`<state_patch>` 只写本轮剧情结算，模型完整返回后提交。路径名必须完全匹配；场景画面和音乐通常只能使用下列通用值。固定剧情引导可以额外提供仅限当前节点使用的画面和音乐值，离开该节点后不得继续选择。未列出的 State 一律不得修改。
-
-## 剧情结算字段
-
-- `touma.affection`：冬马和纱对春希的好感度，结果范围为 0～100。只能用 `state.inc` 写入本轮增量；只有特殊互动才变化，单轮增减不超过 5。
-- `setsuna.affection`：小木曾雪菜对春希的好感度，结果范围为 0～100。只能用 `state.inc` 写入本轮增量；只有特殊互动才变化，单轮增减不超过 5。
-- `performance.proficiency`：学园祭演出熟练度，结果范围为 0～100。只能用 `state.inc` 写入本轮增量；只有实际发生足以影响演出状态的演出练习、磨合、失误或状态波动时才变化，单轮增减不超过 5。
-- `timeline.currentTime`：本轮正文结束时的剧情时间，格式必须为 `YYYY.MM.DD: HH:mm 星期X`，且不得晚于当前的 `timeline.currentSlotEnd`。
+# narrator 演出写入契约
 
 ## 演出切换字段
 
@@ -33,8 +24,3 @@
 | 峰城大附属教学楼楼梯 | `stairs_morning` | `stairs_afternoon` | `stairs_night` |
 | 住宅区或城市街道 | `street_morning` | `street_afternoon` | `street_night` |
 | 车站站台 | `subway_station_morning` | `subway_station_afternoon` | `subway_station_night` |
-
-## 只读剧情边界
-
-- `timeline.currentSlot`：当前剧情节点，由系统维护，不得写入。
-- `timeline.currentSlotEnd`：当前节点允许推进到的最晚时间，由系统维护，不得写入。

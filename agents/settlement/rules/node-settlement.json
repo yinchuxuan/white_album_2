@@ -1,0 +1,60 @@
+[
+  {
+    "id": "wa2-settlement-node",
+    "when": {
+      "phase": "pre_send"
+    },
+    "then": [
+      {
+        "type": "insert",
+        "role": "system",
+        "predicate": {
+          "role": "user",
+          "index": "last"
+        },
+        "anchor": "before",
+        "content": {
+          "prefix": "# 本轮节点结算要求\n节点：{{state:temp.plotFile}} / {{state:temp.PlotType}}\n\n",
+          "include": [
+            {
+              "when": {
+                "state": {
+                  "temp.plotFile": "plot.chapter.1"
+                }
+              },
+              "content": "{{file:settlement.plot.chapter.1#$temp.PlotType}}"
+            },
+            {
+              "when": {
+                "state": {
+                  "temp.plotFile": "plot.chapter.2"
+                }
+              },
+              "content": "{{file:settlement.plot.chapter.2#$temp.PlotType}}"
+            },
+            {
+              "when": {
+                "state": {
+                  "temp.plotFile": "plot.chapter.2.gameEnd1Afterstory"
+                }
+              },
+              "content": "{{file:settlement.plot.chapter.2.gameEnd1Afterstory#$temp.PlotType}}"
+            },
+            {
+              "when": {
+                "state": {
+                  "temp.plotFile": "plot.chapter.2.successAfterstory"
+                }
+              },
+              "content": "{{file:settlement.plot.chapter.2.successAfterstory#$temp.PlotType}}"
+            }
+          ]
+        },
+        "_meta": {
+          "source": "wa2_settlement_node",
+          "visibility": "llm_only"
+        }
+      }
+    ]
+  }
+]

@@ -1,19 +1,25 @@
 {
-  "first_msg": "first_msg.md",
-  "system_prompt": "system_prompt.md",
-  "plot.chapter.1": "plot/chapter-1.md",
-  "plot.chapter.2": "plot/chapter-2.md",
-  "plot.chapter.2.gameEnd1Afterstory": "plot/chapter-2-game-end1-afterstory.md",
-  "plot.chapter.2.successAfterstory": "plot/chapter-2-success-afterstory.md",
-  "roleplay_rules": "roleplay_rules.md",
-  "state.llm_schema": "state/llm_schema.md",
-  "state.update_rules": "state/state_update_rules.md",
+  "first_msg": "agents/narrator/prompts/first_msg.md",
+  "system_prompt": "agents/narrator/prompts/system_prompt.md",
+  "settlement.plot.chapter.1": "agents/settlement/plot/chapter-1.md",
+  "settlement.plot.chapter.2": "agents/settlement/plot/chapter-2.md",
+  "settlement.plot.chapter.2.gameEnd1Afterstory": "agents/settlement/plot/chapter-2-game-end1-afterstory.md",
+  "settlement.plot.chapter.2.successAfterstory": "agents/settlement/plot/chapter-2-success-afterstory.md",
+  "settlement_prompt": "agents/settlement/prompts/system_prompt.md",
+  "state.settlement_schema": "agents/settlement/prompts/state_schema.md",
+  "plot.chapter.1": "agents/narrator/plot/chapter-1.md",
+  "plot.chapter.2": "agents/narrator/plot/chapter-2.md",
+  "plot.chapter.2.gameEnd1Afterstory": "agents/narrator/plot/chapter-2-game-end1-afterstory.md",
+  "plot.chapter.2.successAfterstory": "agents/narrator/plot/chapter-2-success-afterstory.md",
+  "roleplay_rules": "agents/narrator/prompts/roleplay_rules.md",
+  "state.llm_schema": "agents/narrator/prompts/llm_schema.md",
+  "state.update_rules": "agents/narrator/prompts/state_update_rules.md",
   "worldbook": {
     "directory": "worldbook",
     "include": ["config.json", "entries/*.md"]
   },
   "timeline": {
-    "directory": "plot",
+    "directory": "agents/narrator/plot",
     "include": ["chapter-1.json", "chapter-2.json"]
   }
 }

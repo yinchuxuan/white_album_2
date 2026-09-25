@@ -14,10 +14,13 @@
 
 ## 开始游玩
 
-当前源码已迁移到世界站 formatVersion 1（main.js + Narrator Agent），需要支持该协议的客户端或 Web 播放器；
+当前源码已迁移到世界站 formatVersion 1（main.js + narrator / settlement 双 Agent），需要支持该协议的客户端或 Web 播放器；
 旧版客户端和已发布的旧卡包不能与这份源码混用。旧存档不自动迁移。
 开发测试可直接导入本仓库的 card.json；新建 Session 时先执行 Agent 的 init，再由 onStart 分段展示开场，不请求模型。
-first_msg.md 由 init 写入 Narrator 的 Messages，onStart 直接读取这条消息；读档不会重复播放开场。
+agents/narrator/prompts/first_msg.md 只包含开场正文、选项和演出，由 narrator 的 init 写入 Messages，onStart 直接展示。初始记忆由 settlement 的 init 从 agents/settlement/initial-memory.json 加载，初始剧情时间采用 State schema 默认值；读档不重复初始化或播放开场。
+
+narrator 负责剧情、选项和分段演出；正文生成完成后，settlement 在玩家继续阅读时生成摘要并结算时间、好感度和熟练度，不展示结算回复。下一轮和存档必须等待阅读与结算均完成；失败可整轮重试。每轮通常调用两次模型。
+此版本为 1.2.0，新增 Agent 后须重新导入并新建 Session，1.1.0 单 Agent 存档不自动迁移。
 
 以下是旧版已发布卡包的获取方式；新协议卡包需随兼容的平台版本重新发布：
 
@@ -50,3 +53,22 @@ AI 生成的对白、细节和演出可能偏离设定，剧情效果取决于�
 本项目是爱好者制作的非官方同人作品，与原作制作方无隶属或授权关系。原作名称、角色及相关素材的权利归各自权利人所有；本仓库的公开不代表相关素材可任意再分发或商用。
 
 欢迎支持原作。遇到问题可在 [Issues](https://github.com/yinchuxuan/white_album_2/issues) 中提供平台版本、卡片版本、所用模型和复现步骤，请勿公开 API Key 或未经检查的私人对话日志。
+
+## 开发验证
+
+运行 `node --test tests/*.test.mjs`。运行时测试使用相邻 WorldCardStation 仓库中已安装的依赖和真实 Worker；平台路径不同时通过 `WCS_ROOT` 指定。模型回复使用固定测试数据，不访问外部模型服务。
+
+### Agent 文件布局
+
+- `agents/narrator/prompts/`：叙事、开场、角色扮演与演出提示词。
+- `agents/narrator/scripts/`：剧情调度与章节逻辑。
+- `agents/narrator/plot/`：章节正文和时间线配置。
+- `agents/narrator/rules/`：narrator 专属规则。
+- 各 Agent 目录中的 `agent.json` 和 `response-validation.json`：定义及回复校验。
+- `agents/settlement/initial-memory.json`：settlement 初始化记忆。
+- `agents/settlement/prompts/`：摘要和数值结算提示词。
+- `agents/shared/scripts/`：两个 Agent 共用的记忆处理脚本。
+
+Agent 定义为 `agents/narrator/agent.json` 和 `agents/settlement/agent.json`；`files.json` 保持原有资源 ID，映射到新路径。章节内容位于 `agents/narrator/plot/`；世界书和通用库仍位于 `worldbook/`、`lib/`。
+
+固定节点的摘要与数值要求位于 `agents/settlement/plot/`，通过 `rules/node-settlement.json` 按本轮 `temp.plotFile` 和 `temp.PlotType` 注入。narrator 的 plot 只保留剧情与演出引导；自由剧情、低好感回退与后日谈也提供同名节点，结算要求明确为“无”，统一按 PlotType 读取并使用通用结算规则。

@@ -104,7 +104,7 @@ function renderMemory(memory) {
     renderItems(memory.anchor),
     '',
     '## 当前事项',
-    '以下是上一轮结束时仍有效的完整事项。回复结束时必须重新输出仍有效的全部 current_event。',
+    '以下是上一轮结算后仍有效的完整事项。',
     renderItems(memory.currentEvents),
     '',
     '## 近期事件',
@@ -119,7 +119,7 @@ function run(ctx) {
 
   const assistant = [...messages].reverse().find(message => message.role === 'assistant');
   const items = parseItems(assistant && assistant.content);
-  if (items.length > 0) mergeItems(memory, items);
+  if (ctx.args?.apply !== false && items.length > 0) mergeItems(memory, items);
 
   const nextMessages = messages.map((message) => {
     if (!message._meta || message._meta.source !== 'wa2_summary') return message;
