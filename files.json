@@ -16,10 +16,17 @@
   "state.update_rules": "agents/narrator/prompts/state_update_rules.md",
   "worldbook": {
     "directory": "worldbook",
-    "include": ["config.json", "entries/*.md"]
+    "include": [
+      "config.json",
+      "entries/*.md"
+    ]
   },
   "timeline": {
     "directory": "agents/narrator/plot",
-    "include": ["chapter-1.json", "chapter-2.json"]
-  }
+    "include": [
+      "chapter-1.json",
+      "chapter-2.json"
+    ]
+  },
+  "director.prompt": "agents/director/prompts/system_prompt.md"
 }

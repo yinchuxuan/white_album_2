@@ -14,13 +14,13 @@
 
 ## 开始游玩
 
-当前源码已迁移到世界站 formatVersion 1（main.js + narrator / settlement 双 Agent），需要支持该协议的客户端或 Web 播放器；
+当前源码已迁移到世界站 formatVersion 1（main.js + director / narrator / settlement 三 Agent），需要支持该协议的客户端或 Web 播放器；
 旧版客户端和已发布的旧卡包不能与这份源码混用。旧存档不自动迁移。
 开发测试可直接导入本仓库的 card.json；新建 Session 时先执行 Agent 的 init，再由 onStart 分段展示开场，不请求模型。
 agents/narrator/prompts/first_msg.md 只包含开场正文、选项和演出，由 narrator 的 init 写入 Messages，onStart 直接展示。初始记忆由 settlement 的 init 从 agents/settlement/initial-memory.json 加载，初始剧情时间采用 State schema 默认值；读档不重复初始化或播放开场。
 
-narrator 负责剧情、选项和分段演出；正文生成完成后，settlement 在玩家继续阅读时生成摘要并结算时间、好感度和熟练度，不展示结算回复。下一轮和存档必须等待阅读与结算均完成；失败可整轮重试。每轮通常调用两次模型。
-此版本为 1.2.0，新增 Agent 后须重新导入并新建 Session，1.1.0 单 Agent 存档不自动迁移。
+director 先识别玩家意图，结合上轮剧情与选项、历史记忆、人物索引、当前状态和节点约束，生成“玩家意图 / 剧情节拍 / 本轮边界”计划。narrator 消费本轮 plan，流式生成剧情、选项和分段演出；正文生成完成后，settlement 在玩家继续阅读时生成摘要并结算时间、好感度和熟练度，不展示结算回复。下一轮和存档必须等待阅读与结算均完成；失败可整轮重试。每轮通常调用三次模型，首屏等待简短 plan 后即可随 narrator 流式展示，不等待整篇正文生成完成。
+此版本为 1.3.0，新增 Agent 后须重新导入并新建 Session，此前版本存档不自动迁移。
 
 以下是旧版已发布卡包的获取方式；新协议卡包需随兼容的平台版本重新发布：
 
@@ -61,7 +61,9 @@ AI 生成的对白、细节和演出可能偏离设定，剧情效果取决于�
 ### Agent 文件布局
 
 - `agents/narrator/prompts/`：叙事、开场、角色扮演与演出提示词。
-- `agents/narrator/scripts/`：剧情调度与章节逻辑。
+- `agents/director/scripts/`：剧情调度与章节逻辑，仅在规划前解析一次本轮节点。
+- `agents/director/`：剧情规划 Agent、提示词、上下文规则与回复校验。
+- `agents/shared/plot-context.json`：director 与 narrator 共享的本轮节点约束；narrator 不重复解析节点或抽取随机事件。
 - `agents/narrator/plot/`：章节正文和时间线配置。
 - `agents/narrator/rules/`：narrator 专属规则。
 - 各 Agent 目录中的 `agent.json` 和 `response-validation.json`：定义及回复校验。
@@ -69,6 +71,8 @@ AI 生成的对白、细节和演出可能偏离设定，剧情效果取决于�
 - `agents/settlement/prompts/`：摘要和数值结算提示词。
 - `agents/shared/scripts/`：两个 Agent 共用的记忆处理脚本。
 
-Agent 定义为 `agents/narrator/agent.json` 和 `agents/settlement/agent.json`；`files.json` 保持原有资源 ID，映射到新路径。章节内容位于 `agents/narrator/plot/`；世界书和通用库仍位于 `worldbook/`、`lib/`。
+Agent 定义位于 `agents/director/agent.json`、`agents/narrator/agent.json` 和 `agents/settlement/agent.json`；`files.json` 保持原有资源 ID，映射到新路径。章节内容位于 `agents/narrator/plot/`；世界书和通用库仍位于 `worldbook/`、`lib/`。
 
 固定节点的摘要与数值要求位于 `agents/settlement/plot/`，通过 `rules/node-settlement.json` 按本轮 `temp.plotFile` 和 `temp.PlotType` 注入。narrator 的 plot 只保留剧情与演出引导；自由剧情、低好感回退与后日谈也提供同名节点，结算要求明确为“无”，统一按 PlotType 读取并使用通用结算规则。
+
+director 的计划只供 narrator 写作，不进入玩家可见记录，也不作为 settlement 的已发生事实。settlement 始终根据实际生成的 narrator 原文结算。规划失败时不调用 narrator，整轮可重试；取消恢复轮前状态。

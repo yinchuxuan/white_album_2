@@ -11,6 +11,8 @@ export async function onStart(ctx) {
 
 export async function onInput(ctx, input) {
   ctx.state.set('turn.input', input);
+  const planning = ctx.agents.call('director');
+  await planning.done();
   const call = ctx.agents.call('narrator');
   const reading = ctx.present(ctx.createReader({ source: call.response, mode: 'segmented' }), { waitForAdvance: waitForReading });
   const settlement = call.done().then(async () => {

@@ -1,0 +1,86 @@
+{
+  "id": "wa2-plan-context",
+  "when": {
+    "phase": "pre_send"
+  },
+  "find": [
+    {
+      "name": "previousNarrative",
+      "agentId": "narrator",
+      "from": {
+        "role": "assistant",
+        "index": "last"
+      }
+    }
+  ],
+  "then": [
+    {
+      "type": "remove",
+      "predicate": {
+        "content": {
+          "regex": "[\\s\\S]*"
+        }
+      }
+    },
+    {
+      "type": "insert",
+      "role": "system",
+      "content": "{{file:director.prompt}}"
+    },
+    {
+      "type": "insert",
+      "role": "system",
+      "content": "# 人物索引\n{{file:worldbook/entries/世界书索引.md}}.regex_extract{pattern:'人物:([\\s\\S]*?)地点:',group:1}",
+      "_meta": {
+        "source": "wa2_character_index",
+        "visibility": "llm_only"
+      }
+    },
+    {
+      "type": "insert",
+      "role": "system",
+      "content": "",
+      "_meta": {
+        "source": "wa2_summary",
+        "visibility": "llm_only"
+      }
+    },
+    {
+      "type": "exec",
+      "sourceFile": "agents/shared/scripts/summary-memory.js",
+      "args": {
+        "apply": false
+      }
+    },
+    {
+      "type": "insert",
+      "role": "system",
+      "content": "# 上轮剧情与选项（仅供理解本轮输入）\n{{state:temp.find.previousNarrative}}.regex_replace{pattern:'<state_patch_stream>[\\s\\S]*?</state_patch_stream>',with:'',flags:'g'}",
+      "_meta": {
+        "source": "wa2_previous_narrative",
+        "visibility": "llm_only"
+      }
+    },
+    {
+      "type": "insert",
+      "role": "system",
+      "content": "# 当前剧情状态\n- timeline.currentTime: {{state:timeline.currentTime}}\n- timeline.currentSlot: {{state:timeline.currentSlot}}\n- timeline.currentSlotEnd: {{state:timeline.currentSlotEnd}}\n- touma.affection: {{state:touma.affection}}\n- setsuna.affection: {{state:setsuna.affection}}\n- performance.proficiency: {{state:performance.proficiency}}"
+    },
+    {
+      "type": "insert",
+      "role": "system",
+      "content": {
+        "$import": "agents/shared/plot-context.json"
+      },
+      "_meta": {
+        "source": "wa2_plan_constraints",
+        "visibility": "llm_only"
+      }
+    },
+    {
+      "type": "insert",
+      "role": "user",
+      "content": "{{state:turn.input}}"
+    }
+  ]
+}

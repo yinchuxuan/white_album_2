@@ -1,0 +1,33 @@
+{
+  "id": "wa2-director-plan",
+  "when": {
+    "phase": "pre_send"
+  },
+  "find": [
+    {
+      "name": "directorPlan",
+      "agentId": "director",
+      "from": {
+        "role": "assistant",
+        "index": "last"
+      }
+    }
+  ],
+  "then": [
+    {
+      "type": "insert",
+      "role": "system",
+      "predicate": {
+        "role": "user",
+        "index": "last"
+      },
+      "anchor": "before",
+      "content": "# 本轮剧情 plan\n以下为 director 根据当前玩家意图和节点约束制定的写作计划。按顺序展开剧情节拍，不复述 plan。原始玩家行动、人物知情边界和固定节点限制优先；plan 不授权额外推进时间或添加用户未选择的行动。你仍负责正文、演出 state_patch_stream 和末尾 choices。\n\n{{state:temp.find.directorPlan}}",
+      "ttl": 1,
+      "_meta": {
+        "source": "wa2_director_plan",
+        "visibility": "llm_only"
+      }
+    }
+  ]
+}

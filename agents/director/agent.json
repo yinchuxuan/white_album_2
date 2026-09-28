@@ -1,0 +1,14 @@
+{
+  "model": "default",
+  "responseValidation": {
+    "$import": "agents/director/response-validation.json"
+  },
+  "rules": [
+    {
+      "$import": "agents/director/rules/resolve-timeline.json"
+    },
+    {
+      "$import": "agents/director/rules/context.json"
+    }
+  ]
+}

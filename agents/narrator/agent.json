@@ -1,16 +1,36 @@
 {
   "model": "default",
-  "responseValidation": { "$import": "agents/narrator/response-validation.json" },
+  "responseValidation": {
+    "$import": "agents/narrator/response-validation.json"
+  },
   "rules": [
-    { "$import": "agents/narrator/rules/system-prompt.json" },
+    {
+      "$import": "agents/narrator/rules/system-prompt.json"
+    },
     {
       "id": "wa2-player-input",
-      "when": { "phase": "pre_send" },
-      "then": [{ "type": "insert", "role": "user", "content": "{{state:turn.input}}" }]
+      "when": {
+        "phase": "pre_send"
+      },
+      "then": [
+        {
+          "type": "insert",
+          "role": "user",
+          "content": "{{state:turn.input}}"
+        }
+      ]
     },
-    { "$import": "agents/narrator/rules/compress-assistant-history.json" },
-    { "$import": "agents/narrator/rules/resolve-timeline.json" },
-    { "$import": "agents/narrator/rules/insert-turn-context.json" },
-    { "$import": "agents/narrator/rules/tail-timeline-guide.json" }
+    {
+      "$import": "agents/narrator/rules/compress-assistant-history.json"
+    },
+    {
+      "$import": "agents/narrator/rules/insert-turn-context.json"
+    },
+    {
+      "$import": "agents/narrator/rules/tail-timeline-guide.json"
+    },
+    {
+      "$import": "agents/narrator/rules/director-plan.json"
+    }
   ]
 }

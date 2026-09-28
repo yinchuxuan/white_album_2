@@ -1,14 +1,28 @@
 {
   "formatVersion": "1",
-  "version": "1.2.0",
+  "version": "1.3.0",
   "main": "main.js",
-  "agents": { "narrator": "agents/narrator/agent.json", "settlement": "agents/settlement/agent.json" },
+  "agents": {
+    "director": "agents/director/agent.json",
+    "narrator": "agents/narrator/agent.json",
+    "settlement": "agents/settlement/agent.json"
+  },
   "id": "white-album-2",
   "name": "白色相簿2",
   "stateSchema": "state/schema.json",
-  "files": { "$import": "files.json" },
-  "audio": { "$import": "audio.json" },
-  "visual": { "$import": "visual.json" },
-  "display": { "$import": "display.json" },
-  "ui": { "$import": "ui.json" }
+  "files": {
+    "$import": "files.json"
+  },
+  "audio": {
+    "$import": "audio.json"
+  },
+  "visual": {
+    "$import": "visual.json"
+  },
+  "display": {
+    "$import": "display.json"
+  },
+  "ui": {
+    "$import": "ui.json"
+  }
 }

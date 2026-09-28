@@ -1,0 +1,48 @@
+{
+  "onFailure": "retry",
+  "rules": [
+    {
+      "id": "plan-0",
+      "type": "content.regex",
+      "source": "raw",
+      "pattern": "^## 玩家意图\\r?\\n(?=\\s*\\S)",
+      "flags": "m",
+      "matches": {
+        "eq": 1
+      },
+      "message": "plan 必须包含非空小节：玩家意图"
+    },
+    {
+      "id": "plan-1",
+      "type": "content.regex",
+      "source": "raw",
+      "pattern": "^## 剧情节拍\\r?\\n(?=\\s*\\S)",
+      "flags": "m",
+      "matches": {
+        "eq": 1
+      },
+      "message": "plan 必须包含非空小节：剧情节拍"
+    },
+    {
+      "id": "plan-2",
+      "type": "content.regex",
+      "source": "raw",
+      "pattern": "^## 本轮边界\\r?\\n(?=\\s*\\S)",
+      "flags": "m",
+      "matches": {
+        "eq": 1
+      },
+      "message": "plan 必须包含非空小节：本轮边界"
+    },
+    {
+      "id": "plan-no-control-tags",
+      "type": "content.regex",
+      "source": "raw",
+      "pattern": "<(?:state_patch(?:_stream)?|summary|choices)\\b",
+      "matches": {
+        "eq": 0
+      },
+      "message": "director 只能输出剧情计划，禁止 patch、summary 和 choices"
+    }
+  ]
+}
