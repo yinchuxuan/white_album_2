@@ -1,6 +1,11 @@
 {
   "schema": {
+    "PlotNode": {"type":"string","default":"","llmWrite":true,"uiVisible":false,"description":"本轮剧情节点：free、已开放的隐藏节点，或脚本选择的固定节点。"},
+    "PlotPlan": {"type":"string","default":"","llmWrite":true,"uiVisible":false,"description":"director 生成的自由剧情规划；固定和隐藏节点保持为空，预设规划直接引用节点 Markdown。"},
+    "PlotWorldbookIndex": {"type":"array","default":[],"llmWrite":true,"uiVisible":false,"description":"本轮世界书召回词列表，按已注册 keys 匹配，未命中项忽略。"},
+    "story.triggeredHiddenNodes": { "type": "array", "default": [], "llmWrite": false, "uiVisible": false, "description": "已命中的隐藏节点 plotNode；通过 director 校验后记录，后续不再注册，由脚本维护。" },
     "turn.input": { "type": "string", "default": "", "llmWrite": false, "uiVisible": false },
+    "turn.previousPlotNode": { "type": "string", "default": "", "llmWrite": false, "uiVisible": false, "description": "上一轮剧情节点，用于隐藏节点的相邻回合条件。" },
     "touma.affection": {
       "type": "number",
       "default": 18,
@@ -214,14 +219,6 @@
       "default": "FreePlot1",
       "description": "当前章节内的时间轴 slot，由 timeline resolver 写入，供调试和后续章节切换使用。",
       "llmRead": true,
-      "llmWrite": false
-    },
-    "story.chapter2SetsunaBranch": {
-      "type": "enum",
-      "values": ["undecided", "secret", "reserved"],
-      "default": "undecided",
-      "description": "第二章雪菜邀请分支。secret 表示雪菜向春希袒露KTV秘密，reserved 表示雪菜加入同好会但仍保留私人秘密。由 timeline resolver 写入。",
-      "llmRead": false,
       "llmWrite": false
     },
     "story.chapter2GameEnd1Reached": {

@@ -99,6 +99,21 @@
           "sourceFile": "agents/shared/scripts/summary-memory.js"
         }
       ]
+    },
+    {
+      "id": "wa2-next-dispatch",
+      "when": {
+        "phase": "post_response"
+      },
+      "then": [
+        {
+          "type": "exec",
+          "sourceFile": "agents/shared/scripts/prepare-dispatch.js",
+          "args": {
+            "timeline": "timeline"
+          }
+        }
+      ]
     }
   ]
 }

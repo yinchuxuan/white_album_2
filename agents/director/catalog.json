@@ -1,0 +1,99 @@
+{
+  "worldbook": {
+    "北原春希": "entries/北原春希.md",
+    "冬马和纱": "entries/冬马和纱.md",
+    "小木曾雪菜": "entries/小木曾雪菜.md",
+    "饭冢武也": "entries/饭冢武也.md",
+    "水泽依绪": "entries/水泽依绪.md",
+    "早坂亲志": "entries/早坂亲志.md",
+    "柳原朋": "entries/柳原朋.md",
+    "小木曾孝宏": "entries/小木曾孝宏.md",
+    "三年E班班主任": "entries/三年E班班主任.md",
+    "诹访老师": "entries/诹访老师.md",
+    "第二音乐教室": "entries/第二音乐教室.md",
+    "第三音乐教室": "entries/第三音乐教室.md",
+    "峰城大附属中学": "entries/峰城大附属中学.md",
+    "冬马家": "entries/冬马家.md"
+  },
+  "presets": {
+    "plot.chapter.1#HiddenPlot2": [
+      "北原春希",
+      "水泽依绪",
+      "小木曾雪菜",
+      "峰城大附属中学"
+    ],
+    "plot.chapter.1#HiddenPlot1": [
+      "北原春希",
+      "冬马和纱",
+      "第二音乐教室",
+      "第三音乐教室"
+    ],
+    "plot.chapter.1#FixedPlot2": [
+      "北原春希",
+      "冬马和纱",
+      "小木曾雪菜",
+      "峰城大附属中学"
+    ],
+    "plot.chapter.1#FixedPlot3": [
+      "北原春希",
+      "冬马和纱",
+      "早坂亲志",
+      "三年E班班主任",
+      "峰城大附属中学"
+    ],
+    "plot.chapter.1#FixedPlot4": [
+      "北原春希",
+      "冬马和纱",
+      "小木曾雪菜",
+      "第三音乐教室",
+      "第二音乐教室",
+      "峰城大附属中学"
+    ],
+    "plot.chapter.2#FixedPlot1": [
+      "北原春希",
+      "小木曾雪菜",
+      "水泽依绪",
+      "三年E班班主任",
+      "峰城大附属中学"
+    ],
+    "plot.chapter.2#HiddenPlot2": [
+      "北原春希",
+      "小木曾雪菜"
+    ],
+    "plot.chapter.2#HiddenPlot3": [
+      "北原春希",
+      "小木曾雪菜"
+    ],
+    "plot.chapter.2#HiddenPlot4": [
+      "北原春希",
+      "冬马和纱",
+      "饭冢武也",
+      "第三音乐教室",
+      "第二音乐教室"
+    ],
+    "plot.chapter.2#HiddenPlot5": [
+      "北原春希",
+      "冬马和纱",
+      "小木曾雪菜",
+      "第三音乐教室"
+    ],
+    "plot.chapter.2#FixedPlot6": [
+      "北原春希",
+      "冬马和纱",
+      "小木曾雪菜",
+      "小木曾孝宏"
+    ],
+    "plot.chapter.2#FixedPlot7": [
+      "北原春希",
+      "冬马和纱",
+      "小木曾雪菜",
+      "峰城大附属中学"
+    ],
+    "plot.chapter.2#GameEnd1": [
+      "北原春希",
+      "冬马和纱",
+      "小木曾雪菜",
+      "峰城大附属中学"
+    ]
+  }
+}

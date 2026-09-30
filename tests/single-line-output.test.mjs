@@ -76,7 +76,7 @@ test('opening and generated choices finish reading without a choice-click acknow
   const choices = opening.match(/<choices>[\s\S]*?<\/choices>/)[0];
   const events = [];
   const ctx = {
-    state: { set: (key, value) => events.push([key, value]) },
+    state: { set: (key, value) => events.push([key, structuredClone(value)]), get: () => 'plot.chapter.1#FixedPlot2' },
     agents: {
       messages: () => [{ content: opening, _meta: { source: 'wa2_first_msg' } }],
       call: id => ({ response: choices, done: async () => events.push(`${id}:done`) })
@@ -93,5 +93,5 @@ test('opening and generated choices finish reading without a choice-click acknow
   assert.deepEqual(events, ['present']);
   events.length = 0;
   await entry.onInput(ctx, '选择 A');
-  assert.deepEqual(events, [['turn.input', '选择 A'], 'present', 'narrator:done', 'settlement:done']);
+  assert.deepEqual(events, [['turn.previousPlotNode', 'plot.chapter.1#FixedPlot2'], ['turn.input', '选择 A'], ['PlotNode', 'plot.chapter.1#FixedPlot2'], ['PlotPlan', ''], ['PlotWorldbookIndex', []], 'present', 'narrator:done', 'settlement:done']);
 });

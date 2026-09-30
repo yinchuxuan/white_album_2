@@ -1,4 +1,6 @@
 {
+  "director_prompt": "agents/director/prompts/system.md",
+  "plans": { "directory": "agents/director", "include": ["catalog.json", "hidden-nodes.json"] },
   "first_msg": "agents/narrator/prompts/first_msg.md",
   "system_prompt": "agents/narrator/prompts/system_prompt.md",
   "settlement.plot.chapter.1": "agents/settlement/plot/chapter-1.md",
@@ -11,6 +13,7 @@
   "plot.chapter.2": "agents/narrator/plot/chapter-2.md",
   "plot.chapter.2.gameEnd1Afterstory": "agents/narrator/plot/chapter-2-game-end1-afterstory.md",
   "plot.chapter.2.successAfterstory": "agents/narrator/plot/chapter-2-success-afterstory.md",
+  "plot.restrictions": "agents/shared/prompts/plot-restrictions.md",
   "roleplay_rules": "agents/narrator/prompts/roleplay_rules.md",
   "state.llm_schema": "agents/narrator/prompts/llm_schema.md",
   "state.update_rules": "agents/narrator/prompts/state_update_rules.md",

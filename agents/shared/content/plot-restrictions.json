@@ -1,0 +1,73 @@
+{
+  "include": [
+    {
+      "when": { "state": { "temp.plotFile": "plot.chapter.1" } },
+      "content": "{{file:plot.restrictions#第一章通用限制}}"
+    },
+    {
+      "when": { "state": { "temp.plotFile": "plot.chapter.2" } },
+      "content": {
+        "prefix": "{{file:plot.restrictions#第二章通用限制}}\n\n",
+        "include": [
+          {
+            "content": {
+              "select": [
+                {
+                  "when": {
+                    "state": {
+                      "story.triggeredHiddenNodes": {
+                        "contains": "plot.chapter.2#HiddenPlot3"
+                      }
+                    }
+                  },
+                  "content": ""
+                }
+              ],
+              "default": "{{file:plot.restrictions#雪菜加入同好会限制}}"
+            }
+          },
+          {
+            "content": {
+              "select": [
+                {
+                  "when": {
+                    "state": {
+                      "story.triggeredHiddenNodes": {
+                        "contains": "plot.chapter.2#HiddenPlot2"
+                      }
+                    }
+                  },
+                  "content": ""
+                }
+              ],
+              "default": "{{file:plot.restrictions#雪菜秘密限制}}"
+            }
+          },
+          {
+            "content": {
+              "select": [
+                {
+                  "when": { "state": {
+                    "story.triggeredHiddenNodes": { "contains": "plot.chapter.2#HiddenPlot4" }
+                  } },
+                  "content": ""
+                }
+              ],
+              "default": "{{file:plot.restrictions#冬马身份限制}}"
+            }
+          }
+        ],
+        "join": "\n\n"
+      }
+    },
+    {
+      "when": { "state": { "temp.plotFile": "plot.chapter.2.successAfterstory" } },
+      "content": "{{file:plot.restrictions#成功结局日后谈限制}}"
+    },
+    {
+      "when": { "state": { "temp.plotFile": "plot.chapter.2.gameEnd1Afterstory" } },
+      "content": "{{file:plot.restrictions#失败结局日后谈限制}}"
+    }
+  ],
+  "join": "\n\n"
+}

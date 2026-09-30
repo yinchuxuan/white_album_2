@@ -7,10 +7,10 @@
     "world_card_station": { "max_recursion_steps": 8 }
   },
   "entries": [
-    { "id": "e000001", "name": "世界书索引", "keys": [], "content": "", "enabled": true, "constant": true, "insertion_order": 10, "extensions": { "world_card_station": { "content_file": "entries/世界书索引.md" } } },
-    { "id": "e000002", "name": "北原春希", "keys": [], "content": "", "enabled": true, "constant": true, "insertion_order": 20, "extensions": { "world_card_station": { "content_file": "entries/北原春希.md" } } },
-    { "id": "e000003", "name": "冬马和纱", "keys": [], "content": "", "enabled": true, "constant": true, "insertion_order": 30, "extensions": { "world_card_station": { "content_file": "entries/冬马和纱.md" } } },
-    { "id": "e000004", "name": "小木曾雪菜", "keys": [], "content": "", "enabled": true, "constant": true, "insertion_order": 40, "extensions": { "world_card_station": { "content_file": "entries/小木曾雪菜.md" } } },
+    { "id": "e000001", "name": "世界书索引", "keys": ["世界书索引"], "content": "", "enabled": true, "constant": true, "insertion_order": 10, "extensions": { "world_card_station": { "content_file": "entries/世界书索引.md" } } },
+    { "id": "e000002", "name": "北原春希", "keys": ["北原春希", "春希", "北原", "Haruki", "Kitahara"], "content": "", "enabled": true, "constant": true, "insertion_order": 20, "extensions": { "world_card_station": { "content_file": "entries/北原春希.md" } } },
+    { "id": "e000003", "name": "冬马和纱", "keys": ["冬马和纱", "冬馬和紗", "冬马", "冬馬", "和纱", "和紗", "Touma", "Kazusa"], "content": "", "enabled": true, "constant": true, "insertion_order": 30, "extensions": { "world_card_station": { "content_file": "entries/冬马和纱.md" } } },
+    { "id": "e000004", "name": "小木曾雪菜", "keys": ["小木曾雪菜", "小木曽雪菜", "雪菜", "Setsuna"], "content": "", "enabled": true, "constant": true, "insertion_order": 40, "extensions": { "world_card_station": { "content_file": "entries/小木曾雪菜.md" } } },
     { "id": "e000005", "name": "饭冢武也", "keys": ["武也", "饭冢", "飯塚", "Takeya", "Iizuka"], "content": "", "enabled": true, "constant": false, "insertion_order": 50, "extensions": { "world_card_station": { "content_file": "entries/饭冢武也.md" } } },
     { "id": "e000006", "name": "水泽依绪", "keys": ["依绪", "依緒", "水泽", "水沢", "Io", "Mizusawa"], "content": "", "enabled": true, "constant": false, "insertion_order": 60, "extensions": { "world_card_station": { "content_file": "entries/水泽依绪.md" } } },
     { "id": "e000007", "name": "早坂亲志", "keys": ["亲志", "親志", "早坂", "Hayasaka", "Chikashi"], "content": "", "enabled": true, "constant": false, "insertion_order": 70, "extensions": { "world_card_station": { "content_file": "entries/早坂亲志.md" } } },

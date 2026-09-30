@@ -1,0 +1,28 @@
+{
+  "onFailure": "retry",
+  "rules": [
+    {"id":"director-patch-only","type":"content.regex","source":"raw","pattern":"^\\s*<state_patch>[\\s\\S]*?</state_patch>\\s*$","matches":{"eq":1},"message":"director 必须只输出一个普通 state_patch"},
+    {"id":"director-no-stream-patch","type":"content.regex","source":"raw","pattern":"<state_patch_stream\\s*>","matches":{"eq":0},"message":"director 不得输出分段演出 patch"},
+    {"id":"director-PlotNode","type":"state.update","path":"PlotNode","updates":{"eq":1},"operations":["state.set"],"message":"director 本轮须按协议设置 PlotNode"},
+    {"id":"director-PlotPlan","type":"state.update","path":"PlotPlan","updates":{"lte":1},"operations":["state.set"],"message":"director 本轮须按协议设置 PlotPlan"},
+    {"id":"director-PlotWorldbookIndex","type":"state.update","path":"PlotWorldbookIndex","updates":{"lte":1},"operations":["state.set"],"message":"director 本轮须按协议设置 PlotWorldbookIndex"},
+    {"id":"director-forbid-touma.affection","type":"state.update","path":"touma.affection","updates":{"eq":0},"message":"director 不得修改 touma.affection"},
+    {"id":"director-forbid-setsuna.affection","type":"state.update","path":"setsuna.affection","updates":{"eq":0},"message":"director 不得修改 setsuna.affection"},
+    {"id":"director-forbid-performance.proficiency","type":"state.update","path":"performance.proficiency","updates":{"eq":0},"message":"director 不得修改 performance.proficiency"},
+    {"id":"director-forbid-visual.scene","type":"state.update","path":"visual.scene","updates":{"eq":0},"message":"director 不得修改 visual.scene"},
+    {"id":"director-forbid-visual.portraits","type":"state.update","path":"visual.portraits","updates":{"eq":0},"message":"director 不得修改 visual.portraits"},
+    {"id":"director-forbid-visual.portraits.touma","type":"state.update","path":"visual.portraits.touma","updates":{"eq":0},"message":"director 不得修改 visual.portraits.touma"},
+    {"id":"director-forbid-visual.portraits.setsuna","type":"state.update","path":"visual.portraits.setsuna","updates":{"eq":0},"message":"director 不得修改 visual.portraits.setsuna"},
+    {"id":"director-forbid-visual.portraits.mizusawa","type":"state.update","path":"visual.portraits.mizusawa","updates":{"eq":0},"message":"director 不得修改 visual.portraits.mizusawa"},
+    {"id":"director-forbid-visual.portraits.takeya","type":"state.update","path":"visual.portraits.takeya","updates":{"eq":0},"message":"director 不得修改 visual.portraits.takeya"},
+    {"id":"director-forbid-visual.portraits.chikashi","type":"state.update","path":"visual.portraits.chikashi","updates":{"eq":0},"message":"director 不得修改 visual.portraits.chikashi"},
+    {"id":"director-forbid-visual.portraits.yanagihara","type":"state.update","path":"visual.portraits.yanagihara","updates":{"eq":0},"message":"director 不得修改 visual.portraits.yanagihara"},
+    {"id":"director-forbid-visual.portraits.takahiro","type":"state.update","path":"visual.portraits.takahiro","updates":{"eq":0},"message":"director 不得修改 visual.portraits.takahiro"},
+    {"id":"director-forbid-visual.portraits.teacher1","type":"state.update","path":"visual.portraits.teacher1","updates":{"eq":0},"message":"director 不得修改 visual.portraits.teacher1"},
+    {"id":"director-forbid-visual.portraits.teacher2","type":"state.update","path":"visual.portraits.teacher2","updates":{"eq":0},"message":"director 不得修改 visual.portraits.teacher2"},
+    {"id":"director-forbid-audio.bgm","type":"state.update","path":"audio.bgm","updates":{"eq":0},"message":"director 不得修改 audio.bgm"},
+    {"id":"director-forbid-timeline.currentTime","type":"state.update","path":"timeline.currentTime","updates":{"eq":0},"message":"director 不得修改 timeline.currentTime"},
+    {"id":"director-forbid-story.chapter","type":"state.update","path":"story.chapter","updates":{"eq":0},"message":"director 不得修改 story.chapter"},
+    {"id":"director-forbid-story.route","type":"state.update","path":"story.route","updates":{"eq":0},"message":"director 不得修改 story.route"}
+  ]
+}

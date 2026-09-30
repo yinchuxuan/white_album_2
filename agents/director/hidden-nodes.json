@@ -1,0 +1,83 @@
+[
+  {
+    "plotNode": "plot.chapter.1#HiddenPlot2",
+    "condition": {
+      "state": {
+        "timeline.currentTime": { "gte": "2007.10.22: 08:00", "lt": "2007.10.23: 17:00" }
+      }
+    },
+    "summary": "春希与依绪聊起雪菜，谈论她亲切外表下的距离感，依绪打趣春希对雪菜很感兴趣。",
+    "trigger": "春希与依绪交谈，聊起雪菜、此前邀请雪菜参加评选的经历，或向依绪询问她与雪菜的关系，可以自然引出对雪菜待人方式的讨论。",
+    "exclude": "仅计划以后找依绪、只在心里想到雪菜、与其他人谈论雪菜，不触发；当前行动或场景不适合与依绪交谈时不触发。"
+  },
+  {
+    "plotNode": "plot.chapter.1#HiddenPlot1",
+    "condition": {
+      "state": {
+        "timeline.currentTime": { "gte": "2007.10.20: 00:00", "lt": "2007.10.23: 00:00" }
+      }
+    },
+    "summary": "春希在第三音乐教室练习吉他，隔壁的神秘钢琴手加入，完成第一次隔墙合奏。",
+    "trigger": "春希实际开始或继续在第三音乐教室练习吉他，可以自然引出隔壁钢琴与之合奏。",
+    "exclude": "只谈论或计划以后练琴、在家练琴、仅路过，不触发；深夜等隔壁不适合有人练琴的情境不触发。"
+  },
+  {
+    "plotNode": "plot.chapter.2#HiddenPlot2",
+    "condition": {
+      "state": {
+        "setsuna.affection": { "gte": 15 },
+        "timeline.currentTime": {
+          "gte": "2007.10.24: 08:00",
+          "lt": "2007.10.28: 14:00"
+        }
+      }
+    },
+    "summary": "春希在便利店认出打工的雪菜，两人在公园谈起她真实的生活，雪菜请春希保密，并邀请他一小时后再见面。",
+    "trigger": "玩家实际去雪菜打工的便利店找她，或在店内认出她并主动搭话，可以自然引出下班后的公园谈话。",
+    "exclude": "上课期间、只计划以后寻找雪菜、仅在学校聊天或向别人打听，不触发；memory 已记录这段秘密谈话时不重复演出。"
+  },
+  {
+    "plotNode": "plot.chapter.2#HiddenPlot3",
+    "condition": {
+      "state": {
+        "turn.previousPlotNode": "plot.chapter.2#HiddenPlot2",
+        "timeline.currentTime": {
+          "gte": "2007.10.24: 08:00",
+          "lt": "2007.10.28: 14:00"
+        }
+      }
+    },
+    "summary": "春希接受雪菜刚刚提出的邀约，一小时后在 KTV 听她唱歌。雪菜坦白独自唱歌的秘密，表明愿意担任同好会主唱。",
+    "trigger": "承接上一轮实际发出的邀约，玩家选择接受、等待一小时后见面或按约赴约；等待与赴约可以在本轮自然完成。",
+    "exclude": "拒绝或放弃邀约、回家或选择无关行动、约定已经错过，不触发；只记得很久以前的邀约或 memory 中已发生同一段 KTV 剧情，不重复演出。"
+  },
+  {
+    "plotNode": "plot.chapter.2#HiddenPlot4",
+    "condition": {
+      "state": {
+        "timeline.currentTime": {
+          "gte": "2007.10.24: 08:00",
+          "lt": "2007.10.28: 14:00"
+        }
+      }
+    },
+    "summary": "春希追查第二音乐教室的钢琴手，从第三音乐教室翻窗接近时失足，被冬马救下，终于确认同桌就是神秘钢琴手。",
+    "trigger": "玩家实际在学校追查隔壁琴声，并选择翻窗接近第二音乐教室，或明确采取可自然承接这段翻窗剧情的行动。",
+    "exclude": "上课、深夜或音乐教室不适合有人练琴时不触发；只计划寻找、在家练琴、普通地与冬马聊天或仅到门口看看，不触发；不得替玩家决定冒险翻窗；memory 已记录身份揭晓时不重复演出。"
+  },
+  {
+    "plotNode": "plot.chapter.2#HiddenPlot5",
+    "condition": {
+      "all": [
+        { "state": {
+          "story.triggeredHiddenNodes": { "contains": "plot.chapter.2#HiddenPlot3" },
+          "timeline.currentTime": { "gte": "2007.10.24: 08:00", "lt": "2007.10.28: 14:00" }
+        } },
+        { "state": { "story.triggeredHiddenNodes": { "contains": "plot.chapter.2#HiddenPlot4" } } }
+      ]
+    },
+    "summary": "春希向雪菜讲述钢琴手就是冬马，谈起冬马的音乐才能及两人日常相处，雪菜察觉两人的关系比想象中熟悉。",
+    "trigger": "玩家实际与雪菜交流，向她讲述找到钢琴手、冬马的音乐才能或邀请冬马加入同好会，可以自然引出这次谈话；不要求紧接身份揭晓的下一轮。",
+    "exclude": "尚未实际发现身份、只打算以后告诉雪菜、当前在与其他人交谈或行动无关，不触发；memory 已记录同一段谈话时不重复演出。"
+  }
+]

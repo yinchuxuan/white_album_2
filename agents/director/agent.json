@@ -1,0 +1,25 @@
+{
+  "model": "default",
+  "responseValidation": { "$import": "agents/director/response-validation.json" },
+  "rules": [
+    { "id": "director-dispatch-init", "when": { "phase": "init" }, "then": [
+      { "type": "exec", "sourceFile": "agents/shared/scripts/prepare-dispatch.js", "args": { "timeline": "timeline" } }
+    ] },
+    { "id": "director-context", "when": { "phase": "pre_send" },
+      "find": [{ "name": "previous", "agentId": "narrator", "from": { "role": "assistant", "index": "last" } }],
+      "then": [
+        { "type": "remove", "predicate": { "content": { "regex": "[\\s\\S]*" } } },
+        { "type": "insert", "role": "system", "content": "{{file:director_prompt}}\n\n{{file:worldbook/entries/世界书索引.md}}" },
+        { "type": "insert", "role": "system", "content": "", "_meta": { "source": "wa2_summary", "visibility": "llm_only" } },
+        { "type": "exec", "sourceFile": "agents/shared/scripts/summary-memory.js", "args": { "apply": false } },
+        { "type": "exec", "sourceFile": "agents/narrator/scripts/plot.js", "args": { "timeline": "timeline" } },
+        { "type": "exec", "sourceFile": "agents/director/scripts/context.js" },
+        { "type": "insert", "role": "user", "content": "# 上一轮实际正文与选项\n{{state:temp.find.previous}}\n\n# 本轮玩家行动\n{{state:turn.input}}" }
+      ]
+    },
+    { "$import": "agents/director/rules/tail-timeline-guide.json" },
+    { "id": "director-validate-state", "when": { "phase": "post_response" }, "then": [
+      { "type": "exec", "sourceFile": "agents/director/scripts/validate-state.js" }
+    ] }
+  ]
+}

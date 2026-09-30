@@ -1,7 +1,7 @@
 [{
   "id": "wa2-resolve-timeline",
-  "when": { "phase": "pre_send" },
+  "when": { "phase": "pre_send", "state": { "PlotNode": { "nin": ["free"] } } },
   "then": [
-    { "type": "exec", "sourceFile": "agents/narrator/scripts/plot.js", "args": { "timeline": "timeline" } }
+    { "type": "exec", "sourceFile": "agents/narrator/scripts/select-node.js", "args": { "timeline": "timeline" } }
   ]
 }]

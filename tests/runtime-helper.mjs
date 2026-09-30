@@ -4,6 +4,7 @@ import { tmpdir } from 'node:os';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { Worker } from 'node:worker_threads';
+import vm from 'node:vm';
 
 const root = fileURLToPath(new URL('../', import.meta.url));
 const platform = process.env.WCS_ROOT || path.resolve(root, '../WorldCardStation');
@@ -14,6 +15,8 @@ let runtime;
 try {
   const output = path.join(temporary, 'runtime.cjs');
   const contents = [
+    ['applyGameCard', 'src/shared/game-card/engine/engine.js'],
+    ['matchesState', 'src/shared/game-card/engine/predicate.js'],
     ['loadRuntimeDefinition', 'src/shared/game-card/runtime/loadDefinition.js'],
     ['loadMainProgram', 'src/renderer/gameCard/mainProgram.js'],
     ['createMainSession', 'src/renderer/gameCard/mainSession.js']
@@ -53,15 +56,33 @@ function workerFactory() {
   return adapter;
 }
 export const read = file => readFileSync(path.join(root, file), 'utf8');
+export const applyGameCard = runtime.applyGameCard;
+export const matchesState = runtime.matchesState;
+export const freePlanState = { PlotNode: 'free', PlotPlan: '承接玩家行动继续练习，不触发预设事件。', PlotWorldbookIndex: ['北原春希', '第三音乐教室'] };
+export const patch = value => `<state_patch>${JSON.stringify(value)}</state_patch>`;
+export const freePlan = patch(freePlanState);
+export async function refreshDispatch(session) {
+  const expand = file => read(file).replace(/include\("([^"]+)"\);/g, (_, dependency) =>
+    expand(dependency.startsWith('.') ? path.posix.join(path.posix.dirname(file), dependency) : dependency));
+  const run = vm.runInNewContext(`${expand('agents/shared/scripts/prepare-dispatch.js')}; run;`);
+  const state = structuredClone(session.snapshot().state);
+  await run({ state, args: { timeline: 'timeline' }, files: {
+    readText: async (_scope, file) => read(`agents/narrator/plot/${file}`)
+  } });
+  session.setState(() => state);
+}
 export function barrier() {
   let resolve;
   const promise = new Promise(done => { resolve = done; });
   return { resolve, promise };
 }
+export function loadDefinition() {
+  return runtime.loadRuntimeDefinition({ readText: async file => read(file),
+    stat: async file => statSync(path.join(root, file)).isDirectory() ? 'directory' : 'file' });
+}
 export async function createSession(generate) {
   const readText = async file => read(file);
-  const definition = await runtime.loadRuntimeDefinition({ readText,
-    stat: async file => statSync(path.join(root, file)).isDirectory() ? 'directory' : 'file' });
+  const definition = await loadDefinition();
   const program = await runtime.loadMainProgram(definition, readText);
   const session = runtime.createMainSession({ definition, program, readText, generate, workerFactory });
   await session.beginLoad();

@@ -1,0 +1,167 @@
+[
+  {
+    "id": "wa2-director-timeline-guide",
+    "when": {
+      "phase": "pre_send"
+    },
+    "then": [
+      {
+        "type": "insert",
+        "role": "system",
+        "predicate": {
+          "role": "user",
+          "index": "last"
+        },
+        "anchor": "before",
+        "_meta": {
+          "source": "wa2_director_context",
+          "visibility": "llm_only"
+        },
+        "content": {
+          "prefix": "# 请结合玩家行动和以下剧情引导生成 plan：\n",
+          "include": [
+            {
+              "when": {
+                "state": {
+                  "temp.includeFreeGuide": true
+                }
+              },
+              "content": "{{file:$temp.plotFile#剧情大纲}}"
+            },
+            {
+              "when": {
+                "state": {
+                  "temp.PlotType": {
+                    "exists": true
+                  }
+                }
+              },
+              "content": "{{file:$temp.plotFile#$temp.PlotType}}"
+            },
+            {
+              "when": {
+                "state": {
+                  "temp.plotFile": "plot.chapter.2",
+                  "temp.PlotType": "FreePlot1",
+                  "temp.characterGuideRoll": {
+                    "gt": 50
+                  }
+                }
+              },
+              "content": "以下两种弱引导均可选，本轮最多选择其中一种；不合适时都不使用。\n\n{{file:plot.chapter.2#FreePlot1SetsunaWeakGuide}}\n\n{{file:plot.chapter.2#ToumaWeakGuide}}"
+            },
+            {
+              "when": {
+                "state": {
+                  "temp.plotKind": "free"
+                }
+              },
+              "content": "{{file:$temp.plotFile#$temp.plotMoodSection}}"
+            },
+            {
+              "when": {
+                "state": {
+                  "temp.plotFile": "plot.chapter.1",
+                  "temp.plotEventCategory": {
+                    "in": [
+                      "recruitment",
+                      "friends",
+                      "school",
+                      "personal"
+                    ]
+                  }
+                }
+              },
+              "content": "{{file:plot.chapter.1#PlotEventRules}}"
+            },
+            {
+              "when": {
+                "state": {
+                  "temp.plotFile": "plot.chapter.1",
+                  "temp.plotEventCategory": {
+                    "in": [
+                      "recruitment",
+                      "friends",
+                      "school",
+                      "personal"
+                    ]
+                  }
+                }
+              },
+              "content": "{{file:plot.chapter.1#$temp.plotEventSection}}"
+            },
+            {
+              "when": {
+                "state": {
+                  "temp.plotFile": "plot.chapter.2",
+                  "temp.plotEventCategory": {
+                    "in": [
+                      "touma_setsuna",
+                      "music",
+                      "friends",
+                      "personal"
+                    ]
+                  }
+                }
+              },
+              "content": "{{file:plot.chapter.2#PlotEventRules}}"
+            },
+            {
+              "when": {
+                "state": {
+                  "temp.plotFile": "plot.chapter.2",
+                  "temp.plotEventCategory": {
+                    "in": [
+                      "touma_setsuna",
+                      "music",
+                      "friends",
+                      "personal"
+                    ]
+                  }
+                }
+              },
+              "content": "{{file:plot.chapter.2#$temp.plotEventSection}}"
+            },
+            {
+              "when": {
+                "state": {
+                  "temp.plotKind": {
+                    "in": [
+                      "free",
+                      "fixed"
+                    ]
+                  }
+                }
+              },
+              "content": "{{file:$temp.plotFile#$temp.toumaAttitudeSection}}"
+            },
+            {
+              "when": {
+                "state": {
+                  "temp.plotKind": {
+                    "in": [
+                      "free",
+                      "fixed"
+                    ]
+                  }
+                }
+              },
+              "content": "{{file:$temp.plotFile#$temp.setsunaAttitudeSection}}"
+            },
+            {
+              "when": {
+                "state": {
+                  "temp.PlotType": {
+                    "exists": true
+                  }
+                }
+              },
+              "content": { "$import": "agents/shared/content/plot-restrictions.json" }
+            }
+          ],
+          "suffix": "\n\n当前时间：{{state:timeline.currentTime}}；本轮最晚时间：{{state:timeline.currentSlotEnd}}\n# 本轮隐藏节点\n{{state_json:temp.hiddenSchemas}}"
+        }
+      }
+    ]
+  }
+]

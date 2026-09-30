@@ -1,6 +1,9 @@
 {
   "onFailure": "retry",
   "rules": [
+    {"id":"settlement-forbid-PlotNode","type":"state.update","path":"PlotNode","updates":{"eq":0},"message":"settlement 不得修改 PlotNode"},
+    {"id":"settlement-forbid-PlotPlan","type":"state.update","path":"PlotPlan","updates":{"eq":0},"message":"settlement 不得修改 PlotPlan"},
+    {"id":"settlement-forbid-PlotWorldbookIndex","type":"state.update","path":"PlotWorldbookIndex","updates":{"eq":0},"message":"settlement 不得修改 PlotWorldbookIndex"},
     {"id": "error-state-patch-count", "type": "content.regex", "source": "raw", "pattern": "<state_patch>[\\s\\S]*?<\\/state_patch>", "matches": {"eq": 1}, "message": "【建议重新生成】回复必须包含一个普通 state_patch 结算；演出使用 state_patch_stream"},
     {"id": "error-current-time-update", "type": "state.update", "path": "timeline.currentTime", "updates": {"eq": 1}, "operations": ["state.set"], "value": {"regex": "^\\d{4}\\.(?:0[1-9]|1[0-2])\\.(?:0[1-9]|[12]\\d|3[01]): (?:[01]?\\d|2[0-3]):[0-5]\\d 星期[一二三四五六日]$"}, "message": "【建议重新生成】本轮必须且只能用合法格式结算一次 timeline.currentTime"},
     {"id": "error-touma-affection-update", "type": "state.update", "path": "touma.affection", "updates": {"lte": 1}, "operations": ["state.inc"], "delta": {"gte": -5, "lte": 5}, "message": "【建议重新生成】冬马好感度单轮只能用 state.inc 更新一次，增量不得超过 5"},
@@ -11,7 +14,6 @@
     {"id": "error-protected-story-chapter", "type": "state.update", "path": "story.chapter", "updates": {"eq": 0}, "message": "【建议重新生成】模型不得修改系统维护的 story.chapter"},
     {"id": "error-protected-story-route", "type": "state.update", "path": "story.route", "updates": {"eq": 0}, "message": "【建议重新生成】模型不得修改系统维护的 story.route"},
     {"id": "error-protected-story-progress", "type": "state.update", "path": "story.progress", "updates": {"eq": 0}, "message": "【建议重新生成】模型不得修改系统维护的 story.progress"},
-    {"id": "error-protected-setsuna-branch", "type": "state.update", "path": "story.chapter2SetsunaBranch", "updates": {"eq": 0}, "message": "【建议重新生成】模型不得修改系统维护的雪菜剧情分支"},
     {"id": "error-protected-game-end", "type": "state.update", "path": "story.chapter2GameEnd1Reached", "updates": {"eq": 0}, "message": "【建议重新生成】模型不得修改系统维护的失败结局状态"},
     {"id": "error-protected-success-end", "type": "state.update", "path": "story.chapter2SuccessReached", "updates": {"eq": 0}, "message": "【建议重新生成】模型不得修改系统维护的成功结局状态"},
     {"id": "error-protected-summary-memory", "type": "state.update", "path": "memory.summary", "updates": {"eq": 0}, "message": "【建议重新生成】模型不得直接修改系统维护的 summary memory"},
